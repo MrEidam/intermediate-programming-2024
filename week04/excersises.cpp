@@ -8,7 +8,7 @@ int multiply(int a, int b){
 
 // Napište funkci, která rozhodne jestli číslo je sudé
 bool is_even(int x){
-    return !(x%2);
+    return (x % 2 == 0);
 }
 
 // Vypište věechny čísla od start do stop (včetně)
