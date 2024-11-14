@@ -1,7 +1,5 @@
 #include <iostream>
 #include <cassert>
-#include <cmath>
-#include <string>
 
 // TODO: doplťe co potřebujete
 
@@ -18,38 +16,31 @@
 // + 2 = 1234⟧.  Proto ‹power_digit_sum(1234)› získáme jako ⟦3¹ + 4²
 // + 1³ + 2⁴ = 36⟧.
 
-
-int intLenght(int num){
-    if(num == 0) return 0;
-    int count = 0;
-    while(num != 0){
-        num /= 10;
-        count++;
+int power(int a, int exp){
+    int result = 1;
+    for(int i = 0; i < exp; i++){
+        result *= a;
     }
-    return count;
-}
-
-int power(int a, int n){
-    int aOut = 1;
-    for(int i = 0; i < n; i++){
-        aOut *= a;
-    }
-    return aOut;
+    return result;
 }
 
 int powerDigitSum(int num){
-    std::string numbers;
-    int lenght = intLenght(num)-1;
-    for(int i = lenght; i>=0; i--){
-        numbers += std::to_string(num % 7);
+    int digits = 0;
+    int _num = num;
+
+    while(_num > 0){
+        digits++;
+        _num /= 7;
+    }
+
+    int res = 0;
+    while(digits > 0){
+        res += power(num%7, digits);
+        digits--;
         num /= 7;
     }
-    
-    int out = 0;
-    for(int i = 0; i<numbers.length(); i++){
-        out += power(numbers[i]-'0', numbers.length()-i);
-    }
-    return out;
+
+    return res;
 }
 
 // Napište funkci, která najde celé číslo ‹x›, které leží mezi
@@ -58,10 +49,22 @@ int powerDigitSum(int num){
 // platí ⟦f(x) ≥ f(x')⟧, kde ⟦f⟧ je funkce, kterou počítá podprogram
 // ‹poly›).
 
-int poly(int x) {
+int poly(int x){
     return 10 + 30 * x - 15 * x * x * x + x * x * x * x * x;
 }
 
+int fn_max(int low, int high){
+    int max_val = poly(low);
+    int max_idx = low;
+
+    for(int i = low+1; i <= high; i++){
+        if(poly(i) > max_val){
+            max_val = poly(i);
+            max_idx = i;
+        }
+    }
+    return max_idx;
+}
 
 // Napište funkci, která zjistí, kolik bude pracovních dnů v roce
 // ‹year›. Dny v týdnu mají hodnoty 0–6 počínaje pondělím s hodnotou 0.
@@ -90,6 +93,10 @@ int poly(int x) {
 // na který den v týdnu padne 1. leden daného roku. Např.
 // ‹first_day(2001)› vrátí nulu, protože rok 2001 začínal pondělím.
 
+int index_of_day(int day, int month, int year){
+    
+}
+
 int first_day(int year) {
     assert(year >= 1601);
     int years = year - 1601;
@@ -98,8 +105,6 @@ int first_day(int year) {
 }
 
 int main(){
-    std::cout << "25: " << intLenght(25) << std::endl;
-    std::cout << "10^3: " << power(10, 3) << std::endl;
     std::cout << powerDigitSum(1234) << std::endl;
     return 0;
 }
