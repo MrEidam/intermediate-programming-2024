@@ -15,21 +15,118 @@ void print(std::vector<int> data) {
     std::cout << data.back() << " ]";
 }
 
+void print(std::vector<bool> data) {
+    if (data.size() == 0) {
+        std::cout << "[]";
+        return;
+    }
+
+    std::cout << "[ ";
+    for (std::size_t i = 0; i < data.size() - 1; i++) {
+        std::cout << data[i] << ", ";
+    }
+
+    std::cout << data.back() << " ]";
+}
+
 
 /*
  * Napište funkci merge, která vezme dvě vzestupně seřazená pole a spojí je do jednoho
  * vzestupně seřazeného seznamu
  * */
-std::vector<int> merge(std::vector<int> a, std::vector<int> b) {
-    return {};
+
+bool isZero(int i, std::vector<int> a){
+    if(i && a.at(i) == 0){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+std::vector<int> merge(std::vector<int> a, std::vector<int> b){
+    std::vector<int> out;
+    if(a.size()<b.size()){
+        a.resize(b.size());
+    }else if(a.size()>b.size()){
+        b.resize(a.size());
+    }
+
+    for(int i = 0; i<a.size(); i++){
+        if(a.at(i)<=b.at(i)){
+            if(isZero(i, a))
+                out.push_back(a.at(i));
+            if(isZero(i, b))
+                out.push_back(b.at(i));
+        }else{
+            if(isZero(i, b))
+                out.push_back(b.at(i));
+            if(isZero(i, a))
+                out.push_back(a.at(i));
+        }
+    }
+    return out;
 }
 
 /* Napište funkci histogram, která dostane pole čísel z rozsahu [0-100), a vrátí nové pole takové, že
  * na i-té pozici nového seznamu bude uložen počet výskytů čísla i ve vstupním poli.
  */
-std::vector<int> histogram(std::vector<int> data) {
-    return {};
+std::vector<int> histogram(std::vector<int> data){
+    std::vector<int> out;
+    out.resize(100);
+    int apperance = 0;
+
+    for(int i = 0; i < 100; i++){
+        for(int j : data){
+            if(j == i){
+                apperance++;
+            }
+        }
+        out.at(i) = apperance;
+        apperance = 0;
+    }
+
+    /*for(int i = 0; i < 100; i++){
+        if(i == data.at(i)){
+            apperance++;
+            out.push_back(apperance);
+        }else{
+            out.push_back(0);
+        }
+    }*/
+    return out;
 }
+
+/*
+    std::vector<int> merge(std::vector<int> a, std::vector<int> b){
+        std::vector<int> out;
+        std::size_t idxA = 0;
+        std::size_t idxB = 0;
+
+        while(idxA < a.size() && idxB < b.size()){
+            if(a.at(idxA) <= b.at(idxB)){
+                out.push_back(a.at(idxA));
+                idxA++;
+            }else{
+                out.push_back(b.at(idxB));
+                idxB++;
+            }
+        }
+
+        if(idxA < a.size()){
+            for(size_t i = idxA; i < a.size(); i++){
+                out.push_back(a.at(idxA));;
+            }
+        }
+
+        if(idxB < b.size()){
+            for(size_t i = idxB; i < b.size(); i++){
+                out.push_back(b.at(idxB));;
+            }
+        }
+        
+        return out;
+    }
+*/
 
 // Napište (čistou) funkci, která simuluje jeden krok výpočtu
 // jednorozměrného buněčného automatu (cellular automaton). My se
@@ -85,7 +182,41 @@ std::vector<int> histogram(std::vector<int> data) {
 // pravidel na ‹state›.
 
 std::vector<bool> cellular_step(std::vector<bool> input) {
-    return input;
+    std::vector<bool> out;
+    for(int i = 0; i < input.size(); i++){
+        int left = (i == 0) ? 0 : input.at(i - 1);
+        int mid = input.at(i);
+        int right = (i == input.size()-1) ? 0 : input.at(i + 1);
+
+        // │‹old[i - 1]›│‹old[i]›│‹old[i + 1]›│‹new[i]›│
+        // ├┄┄┄┄┄┄┄┄┄┄┄┄┼┄┄┄┄┄┄┄┄┼┄┄┄┄┄┄┄┄┄┄┄┄│┄┄┄┄┄┄┄┄│
+        // │     0      │    0   │      1     │    1   │
+        // │     1      │    0   │      0     │    1   │
+        // │     1      │    0   │      1     │    1   │
+        // │     1      │    1   │      0     │    0   │
+        // │     1      │    1   │      1     │    0   │
+
+        if(left == 0 && mid == 0 && right == 1){
+            out.push_back(1);
+        }else if(left == 1 && mid == 0 && right == 0){
+            out.push_back(1);
+        }else if(left == 1 && mid == 0 && right == 1){
+            out.push_back(1);
+        }else if(left == 1 && mid == 1 && right == 0){
+            out.push_back(0);
+        }else if(left == 1 && mid == 1 && right == 1){
+            out.push_back(0);
+        }else{
+            out.push_back(mid);
+        }
+        /*
+        if(left == 0 && mid == 0 && right == 0 || left == 1 && mid == 0 && right == 0 || left == 0 && mid == 1 && right == 0 || left == 0 && mid == 0 && right == 1){
+            out.push_back(1);
+        }else if(left == 1 && mid == 1 && right == 0 || left == 1 && mid == 0 && right == 1 || left == 0 && mid == 1 && right == 1 || left == 1 && mid == 1 && right == 1){
+            out.push_back(0);
+        }*/
+    }
+    return out;
 }
 
 int main() {
@@ -122,11 +253,16 @@ int main() {
                               63, 28,  4, 64, 49, 12, 87, 41, 38, 15,
                                1, 98, 10, 67,  2, 76, 63, 48, 32, 20,
                                3, 23, 41, 14, 67, 98, 95, 66, 86, 90 };
+    std::vector<bool> bol1 = {0, 1, 1, 0, 0, 1};
     std::cout << "merge(asc1, asc2): ";
     print(merge(asc1, asc2));
     std::cout << std::endl;
 
     std::cout << "histogram(vec2): ";
     print(histogram(vec2));
+    std::cout << std::endl;
+
+    std::cout << "cellular_step(bol1): ";
+    print(cellular_step(bol1));
     std::cout << std::endl;
 }

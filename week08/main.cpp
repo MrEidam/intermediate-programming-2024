@@ -24,7 +24,7 @@ int sum(std::vector<int> data){
 }
 
 float average(std::vector<int> data){
-    return sum(data)/data.size();
+    return (sum(data)+.0)/data.size();
 }
 
 float median(std::vector<int> data){  // seznam lichy veznem prostřední | seznam sudý vezmem prostřední 2 a průměr
