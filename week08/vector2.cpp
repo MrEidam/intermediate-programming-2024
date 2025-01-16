@@ -107,12 +107,45 @@ std::vector<std::vector<int>> cartesian_product(std::vector<int> a, std::vector<
     // {0, 1} {} -> {} 
 }
 
+std::vector<int> addding(std::vector<int> a, std::vector<int> b){
+    std::vector<int> out;
+    if(a.size() > b.size()){
+        b.resize(a.size());
+    }else{
+        a.resize(b.size());
+    }
+    for(int i = 0; i < a.size(); i++){
+        out.push_back(a.at(i)+b.at(i));
+    }
+    return out;
+}
+
+std::vector<std::vector<int>> squareIdkThing(std::vector<std::vector<int>> vec1, std::vector<std::vector<int>> vec2){
+    std::vector<std::vector<int>> out;
+    if(vec1.size() >= vec2.size()){
+        vec2.resize(vec1.size());
+        for(int i = 0; i < vec1.size(); i++){
+            out.push_back(addding(vec1.at(i), vec2.at(i)));
+        }
+        return out;
+    }else{
+        vec1.resize(vec2.size());
+        for(int i = 0; i < vec2.size(); i++){
+            out.push_back(addding(vec1.at(i), vec2.at(i)));
+        }
+        return out;
+    }
+    return {{0}};
+}
+
 int main(){
     std::vector<std::vector<int>> a {{0, 1}, {1, 5, 4}, {2}};
     std::vector<int> b {0, 5, 4, 0};
     std::vector<int> bb {1, 2, 3};
     std::vector<int> c {};
     std::vector<std::vector<int>> d {{0, 1, 2}, {3, 4, 5}, {6, 7, 8}};
+    std::vector<std::vector<int>> e {{1, 2, 3, 4}, {5, 6, 7}, {8, 9}};
+    std::vector<std::vector<int>> ee {{1, 5}, {4, 6}};
 
     //? std::vector<int> b = a[0];
     //? int c = b[1];
@@ -143,5 +176,9 @@ int main(){
 
     std::cout << "Cartesian Product B + BB = ";
     print(cartesian_product(b,bb));
+    std::cout << std::endl;
+
+    std::cout << "Square idk thing E + EE = ";
+    print(squareIdkThing(e,ee));
     std::cout << std::endl;
 }
