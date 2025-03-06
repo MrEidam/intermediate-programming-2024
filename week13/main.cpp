@@ -78,7 +78,7 @@ void showcase_map() {
         {"Adam", 123}};
     std::cout << phone_numbers["Adam"] << std::endl;
 
-    if (phone_numbers.contains("Petr")) {
+    if (phone_numbers.contains("Petr")){
         std::cout << "has" << std::endl;
     } else {
         std::cout << "doesn't have" << std::endl;

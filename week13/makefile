@@ -14,7 +14,7 @@ all: $(basename $(wildcard *.cpp))
 
 # Rule for building targets
 %: %.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $< -o $@.out $(LDFLAGS)
 
 # Rule for cleaning up
 clean:
