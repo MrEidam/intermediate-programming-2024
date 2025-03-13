@@ -54,13 +54,40 @@ struct School {
     auto operator<=>(const School&) const = default;
 };
 
-/*
- * 1) Každý student je v právě jedné třídě
- * 2) V každé učebně probíhá maximálně jedna výuka současně
- * 3) Žádný vyučující neučí zaráz více věcí
- */
-bool is_valid(School school) {
+bool isStudent(School school){
+    for(Student stud : school.students){
+        int inClasses = 0;
+        for(Class clas : school.classes){
+            if(clas.students.contains(stud)){
+                inClasses++;
+            }
+        }
+        if(inClasses != 1) return false;
+    }
     return true;
+}
+
+bool isTimetable(School school){
+    std::map<Room, std::set<TimetableSlot>> timeTa;
+    for(Room room : school.rooms){
+        std::set<TimetableSlot> timetable;
+        auto [_, inserted] = timetable.insert(TimetableSlot{1, 1});
+        
+    }
+    return false;
+}
+
+bool isTeacher(School school){
+    return false;
+}
+
+/*
+ * 1) Každý student je v právě jedné třídě                  ✓
+ * 2) V každé učebně probíhá maximálně jedna výuka současně _
+ * 3) Žádný vyučující neučí zaráz více věcí                 _
+ */
+bool is_valid(School school){
+    return isStudent(school);
 }
 
 void test_is_valid() {
